@@ -297,7 +297,12 @@ function Make-NDSSafeDIR( $path )
 {
     if( -not (Test-Path -Path $path) )
     {
-        mkdir $path | Out-Null
+        ## I just can't stand it.
+        ## The alias 'mkdir' just stopped working today. Just stopped. No idea why
+        ## Attempted to use New-Item and I find that not only did they 
+        ## change the way it works but they changed parameter names!!!!!!!
+        ## Calling .Net directly since MickeySoft can't make up their frickin' minds!
+        $catchoutput = [system.io.directory]::CreateDirectory($path)
     }
 }
 

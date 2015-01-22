@@ -15,7 +15,7 @@ clear-host
 
 $prj = 'Inspector1'
 $obj = 'tester3'
-
+ 
 Import-Module -Name PSNativeDataStore -DisableNameChecking
 
 $tester3 = Get-NDSObject -projectname $prj -objectname $obj
