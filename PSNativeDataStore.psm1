@@ -330,6 +330,7 @@ else   ## variable is set
     {
         $psnativedatastoreeattributerepository.Path = $psnativedatastoreeattributerepository.Path.Substring(0, $psnativedatastoreeattributerepository.Path.Length - 1 )
     }
+    Make-NDSProject -projectname Global
 } 
 
 ##############################################################
