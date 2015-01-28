@@ -81,6 +81,79 @@ function Get-NDSScriptPath( $projectname, $scriptname )
     return "$(Get-NDSProjectScriptPath -projectname $projectname)\$scriptname"
 }
 
+
+#####################
+## Helper functions
+## Provide basic information about repository
+## Created to avoid the need to query the file system yourself.
+## (Just being lazy)
+#####################
+
+
+function List-Project
+{
+ <# 
+   .Description 
+    Lists all of the projects in your repository
+   .Example 
+    List-Project
+   .Notes 
+    NAME:  Make-NDSProject
+    AUTHOR: Jerry W. Francis II.
+    LASTEDIT: 01/30/2015
+    KEYWORDS: PSNativeDataStore, Persistent storage, Project
+ #Requires -Version 2.0 
+ #> 
+ [CmdletBinding()] 
+ Param()
+
+    Get-ChildItem $psnativedatastoreeattributerepository.Path | Where-Object{ $_.PSIsContainer } | ft @{Label="Project Name";Expression={$_.Name} }
+}
+
+
+
+function List-ProjectObject
+{
+ <# 
+   .Description 
+    Lists all of the objects in the specifed project
+   .Example 
+    List-ProjectObject [-projectname AProjectName]
+   .Notes 
+    NAME:  List-ProjectObject
+    AUTHOR: Jerry W. Francis II.
+    LASTEDIT: 01/30/2015
+    KEYWORDS: PSNativeDataStore, Persistent storage, Project, Object
+ #Requires -Version 2.0 
+ #> 
+ [CmdletBinding()] 
+ Param(
+    [Parameter(Position=0, 
+      Mandatory=$false, 
+      ValueFromPipeline=$True)] 
+      $projectname
+ )
+    
+    if( $local:projectname -ne $null )
+    {
+        ## list Projects first
+        $projectpath = Get-NDSProjectDataPath -projectname $projectname
+        Get-ChildItem $projectpath -Filter "*.clixml" | ft @{Label="Project Name";Expression={ $($_.Name).Replace(".clixml","")} }
+
+        ## list Scripts 
+        $projectpath = Get-NDSProjectScriptPath -projectname $projectname
+        Get-ChildItem $projectpath | ft @{Label="Script Name";Expression={$_.Name} }
+
+    }
+    else
+    {
+        "No project specified"
+    }
+}
+
+
+
+
 #####################
 ## Native Data Store Worker Functions
 ## These are the only functions exported in the module
@@ -103,7 +176,7 @@ function Get-NDSObject
    .Notes 
     NAME:  Get-NDSObject
     AUTHOR: Jerry W. Francis II.
-    LASTEDIT: 01/08/2015
+    LASTEDIT: 01/30/2015
     KEYWORDS: PSNativeDataStore, Persistent storage, Object Store
  #Requires -Version 2.0 
  #> 
@@ -157,7 +230,7 @@ function Load-NDSScript
    .Notes 
     NAME:  Load-NDSScript
     AUTHOR: Jerry W. Francis II.
-    LASTEDIT: 01/08/2015
+    LASTEDIT: 01/30/2015
     KEYWORDS: PSNativeDataStore, Persistent storage, Script Store
  #Requires -Version 2.0 
  #> 
@@ -194,7 +267,7 @@ function TransformTo-NDSObject
    .Notes 
     NAME:  TransformTo-NDSObject
     AUTHOR: Jerry W. Francis II.
-    LASTEDIT: 01/08/2015
+    LASTEDIT: 01/30/2015
     KEYWORDS: PSNativeDataStore, Persistent storage, Script Store
  #Requires -Version 2.0 
  #> 
@@ -274,7 +347,7 @@ function Make-NDSProject
    .Notes 
     NAME:  Make-NDSProject
     AUTHOR: Jerry W. Francis II.
-    LASTEDIT: 01/08/2015
+    LASTEDIT: 01/30/2015
     KEYWORDS: PSNativeDataStore, Persistent storage, Project
  #Requires -Version 2.0 
  #> 
@@ -332,6 +405,8 @@ else   ## variable is set
     }
     Make-NDSProject -projectname Global
 } 
+
+
 
 ##############################################################
 ##   At this point you're rip, roarin' and ready to go
