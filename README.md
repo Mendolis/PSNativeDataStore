@@ -16,8 +16,13 @@ NDS also has some interesting features:
       - You load everything by Project.  This allows you to use the same code everywhere - even if the 
          files are stored in different locations on different servers. Never change your code!
       - You can save your include scripts by Project as well. 
-      Helpful if you want a script that works differently in each project and want to use the same name across projects.
-      
+      Helpful if you want a script that works differently in each project and want to 
+        use the same name across projects.
+
+One note about Projects:  NDS will automatically create a project called '__Shared' for you.  This is for any objects or scripts you want to 'Share' across all projects. Feel free to use it but be aware than NDS stores its one system objects or scripts here as well. They have exceptionally long names and it's doubtful they will collide with these names.
+
+Feel free to change any values in the system objects you desire.  If a system object becomes corrupted, simply delete it and it will be created with default values the next time you load the PSNativeDataStore module.
+
 NDS is designed for simplicity and efficiency.  Anything you create in memory then save to disk will be created, automatically.  Watch those typos!
 
       - If you request a non-existent object from a non-existent project, it is created and exists only in memory.
@@ -27,7 +32,7 @@ How can it do this? NDS objects are self-aware!!!
 That's right, when you create an in-memory object or load a NDS object from disk, it is aware of it's own location.  Calling the objects Save() method will automatically store to disk for you!  No need remember where separate objects are located.
 
       - If you copy an object to a different project and load it into your script, it will 'remember' its 
-      NEW location. Each successive save will automatically save to the new project!!  Ain't that just fancy??!?!
+      new location! Each successive save will automatically save to the new project!!  Ain't that just fancy??!?!
 
 #Getting Started
 Very important, do this immediately. Even if you are only considering downloading NDS, do it anyway.  The primary component of NDS is an environment variable named  'PSNativeDataStore'
@@ -50,7 +55,7 @@ Three example files are provided to demonstrate the functionality you will use m
 
   - CreateObjectExample.ps1  - Creates/Loads a NDS object
   - TransformObject.ps1 - Turns a user created PSObject into a self-aware NDS Object!!!
-  - LoadPSScriptFromNDS - Creates a test script in the repository then loads into your session
+  - LoadPSScriptFromNDS - Loads a into your session
                           The script will announce when it is loaded
                           
 I hope you find PSNativeDataStore as useful as it is easy.
