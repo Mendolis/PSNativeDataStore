@@ -1,19 +1,26 @@
 
-
 #     UNDER CONSTRUCTION
 
 # PSNativeDataStore( NDS )
-PSNativeDataStore is a script module designed to store PowerShell objects in a native format to disk.  Ideal of configuration files, your code does not change as you move from server to server.  You can access your objects with the same code even if the object files are located in a different directory or drive on each server!!!
+PSNativeDataStore is a script module designed to store and organize PowerShell objects in a native format to disk.  
+Some of nifty uses for PSNativeDataStore
 
-## Organization
-NDS organizes your files based on project.  Every NDS cmdlet has a -projectname parameter. It is suggest
+      - Configuration files!  Store server specific configurations on the server itself, not in your code.
+      - Persist values from one session to the next
+      - Store values based on project.  Access with the same code everytime!
+      - Special functions allow you to include external scripts you store in the NDS Repository
 
-This was designed and testing using PowerShell version 4.0.  Minor changes may be required to work with earlier versions.
+NDS also has some interesting features:
 
-PSNativeDataStore is a PowerShell module. If you are unfamiliar with the use of modules, please reference the Microsoft document on PowerShell Modules.  The installation documents in this project 
+      - The NDS Repository is organized by Project. Keep your related files together automatically
+      - You can save your include scripts by Project as well.  Helpful if you want a sript that works differently in each project to have the same name.
 
-Full documentation is located in the PSNativeDataStore.rtf document in this project.
-However, knowning technorati do not read the instructions, there are three example scripts for download that demonstrate 99% of the functionality you will ever need.
+Did you know? NDS objects are self-aware!!!
+Thats right, when you create or load a NDS object from disk, it is aware of it's own location.  Calling the objects Save() method will automatically store to disk for you!  Not need remember where separate objects are located.
+
+      - If you copy an object to a different project and load it into your script, it will 'remember' it's new location and automatically save to the new project!!  Ain't that just fancy
+
+#Getting Started
 
   - CreateObjectExample.ps1
       
