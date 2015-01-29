@@ -25,10 +25,11 @@
 ##  duplicate naming and provide single source of all data
 ###############################################################################
 
-## Repository object - Maintains session attributes
-$psnativedatastoreeattributerepository = New-Object –TypeName PSObject –Property @{
+## Repository object - Maintains session attributes - Yes, there is a misspelling.  It's on purpose for uniqueness
+$psnativedatastoreeattributerepository = New-Object –TypeName PSObject –Property @{   
     'Path' = $null;
     'SharedPathName' = '__Shared'
+    'SharedObjectName' = 'PSNativeDataStoreeRepositoryConfiguration'    ## Again, misspelled intentionally
     'LogToConsole' = $true;
     'LogToFile' = $false;              ## Considering log files in future.  Not sure whether they are worth it.
     'LogFile' = $null
@@ -90,15 +91,15 @@ function Get-NDSScriptPath( $projectname, $scriptname )
 #####################
 
 
-function List-Project
+function List-NDSProject
 {
  <# 
    .Description 
     Lists all of the projects in your repository
    .Example 
-    List-Project
+    List-NDSProject
    .Notes 
-    NAME:  Make-NDSProject
+    NAME:  List-NDSProject
     AUTHOR: Jerry W. Francis II.
     LASTEDIT: 01/30/2015
     KEYWORDS: PSNativeDataStore, Persistent storage, Project
@@ -112,15 +113,15 @@ function List-Project
 
 
 
-function List-ProjectObject
+function List-NDSObject
 {
  <# 
    .Description 
     Lists all of the objects in the specifed project
    .Example 
-    List-ProjectObject [-projectname AProjectName]
+    List-NDSObject [-projectname AProjectName]
    .Notes 
-    NAME:  List-ProjectObject
+    NAME:  List-NDSObject
     AUTHOR: Jerry W. Francis II.
     LASTEDIT: 01/30/2015
     KEYWORDS: PSNativeDataStore, Persistent storage, Project, Object
@@ -143,7 +144,6 @@ function List-ProjectObject
         ## list Scripts 
         $projectpath = Get-NDSProjectScriptPath -projectname $projectname
         Get-ChildItem $projectpath | ft @{Label="Script Name";Expression={$_.Name} }
-
     }
     else
     {
@@ -403,10 +403,28 @@ else   ## variable is set
     {
         $psnativedatastoreeattributerepository.Path = $psnativedatastoreeattributerepository.Path.Substring(0, $psnativedatastoreeattributerepository.Path.Length - 1 )
     }
-    Make-NDSProject -projectname Global
+
+    ## insure the shared path exists
+    Make-NDSProject -projectname $psnativedatastoreeattributerepository.SharedPathName
+
+
+    ## At first run, the system configuration is stored in memory. 
+    ## I would like this stored in the repository so users can change the 
+    ## configurations based on environment. Code below handles this
+
+    $sharedobjectpath = Get-NDSObjectPath -projectname $psnativedatastoreeattributerepository.SharedPathName -objectname $psnativedatastoreeattributerepository.SharedObjectName
+    
+    if( (Test-Path $sharedobjectpath) )   ## config file exists
+    {
+        $psnativedatastoreeattributerepository = Get-NDSObject -projectname $psnativedatastoreeattributerepository.SharedPathName -objectname $psnativedatastoreeattributerepository.SharedObjectName
+    }
+    else   ## Doesn't exist
+    {
+        ## Transform in-memory object to NDS object and save to disk for future reference
+        TransformTo-NDSObject -inputobject $psnativedatastoreeattributerepository -projectname $psnativedatastoreeattributerepository.SharedPathName -objectname $psnativedatastoreeattributerepository.SharedObjectName
+        $psnativedatastoreeattributerepository.Save()
+    }
 } 
-
-
 
 ##############################################################
 ##   At this point you're rip, roarin' and ready to go
