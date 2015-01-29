@@ -13,7 +13,8 @@ Some of nifty uses for PSNativeDataStore
 NDS also has some interesting features:
 
       - The NDS Repository is organized by Project. Keep your related files together automatically
-      - You can save your include scripts by Project as well.  Helpful if you want a sript that works differently in each project to have the same name.
+      - You can save your include scripts by Project as well. 
+      Helpful if you want a sript that works differently in each project to have the same name.
 
 Did you know? NDS objects are self-aware!!!
 Thats right, when you create or load a NDS object from disk, it is aware of it's own location.  Calling the objects Save() method will automatically store to disk for you!  Not need remember where separate objects are located.
