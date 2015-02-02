@@ -1,6 +1,3 @@
-
-#     UNDER CONSTRUCTION
-
 # PSNativeDataStore( NDS )
 PSNativeDataStore is a script module designed to store and organize PowerShell objects in a native format to disk.  
 Some of nifty uses for PSNativeDataStore
