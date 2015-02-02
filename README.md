@@ -61,7 +61,7 @@ Copy the example files to a folder of your choice.  When you run these files, yo
 You're all set!!!!!!!
 
 #Usage
-Three example files are provided to demonstrate the functionality you will use most. (More details can be found in the documentation located in the downloadable project .zip file.  These files primarily concern creating/loading/modifying objects and are commented for you're edification
+Three example files are provided to demonstrate the functionality you will use most. These files primarily concern creating/loading/modifying objects and are commented for you're edification
 
   - CreateObjectExample.ps1  - Creates/Loads a NDS object
   - TransformObject.ps1 - Turns a user created PSObject into a self-aware NDS Object!!!
